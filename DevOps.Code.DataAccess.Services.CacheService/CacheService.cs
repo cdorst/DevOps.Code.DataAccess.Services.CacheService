@@ -25,27 +25,20 @@ namespace DevOps.Code.DataAccess.Services.CacheService
         private readonly ILogger<CacheService<TEntity>> _logger;
 
         /// <summary>Constructs an instance of the cache service</summary>
-        CacheService(IDistributedCache cache, ILogger<CacheService<TEntity>> logger, IOptions<CacheSlidingExpiration> options)
+        public CacheService(IDistributedCache cache, ILogger<CacheService<TEntity>> logger, IOptions<CacheSlidingExpiration> options)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             var expiration = options?.Value ?? new CacheSlidingExpiration();
-            _expiration = new DistributedCacheEntryOptions;
-            {
-                SlidingExpiration = new TimeSpan(
-expiration.Days ?? 0,
-expiration.Hours ?? 0,
-expiration.Minutes ?? 0,
-expiration.Seconds ?? 0)
-            };
+            _expiration = new DistributedCacheEntryOptions { SlidingExpiration = new TimeSpan(expiration.Days ?? 0, expiration.Hours ?? 0, expiration.Minutes ?? 0, expiration.Seconds ?? 0) };
         }
 
         /// <summary>Returns the entity given a key value</summary>
         public async Task<TEntity> FindAsync(string key)
         {
             _logger.LogInformation($"Find entry: {key}");
-            if (cacheEntry != null){    _logger.LogInformation("Cache hit");
-            return Serializer.Deserialize<TEntity>(new MemoryStream(cacheEntry));}_logger.LogInformation("Cache miss");
+            var cacheEntry = await _cache.GetAsync(key);
+            if (cacheEntry != null) return Deserialize(cacheEntry)_logger.LogInformation("Cache miss");
             return null;
         }
 
@@ -62,6 +55,13 @@ expiration.Seconds ?? 0)
             _logger.LogInformation($"Setting entry: {key}");
             var value = Serialize(entity);
             await _cache.SetAsync(key, value, _expiration);
+        }
+
+        /// <summary>De-serializes the cached entity</summary>
+        private  Deserialize(byte[] cacheEntry)
+        {
+            _logger.LogInformation("Cache hit");
+            return Serializer.Deserialize<TEntity>(new MemoryStream(cacheEntry));
         }
 
         /// <summary>Serializes the entity</summary>
