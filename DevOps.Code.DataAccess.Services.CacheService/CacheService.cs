@@ -69,7 +69,9 @@ namespace DevOps.Code.DataAccess.Services.CacheService
         private byte[] Serialize(TEntity entity)
         {
             _logger.LogInformation("ProtoBuf serializing record");
-            using (var stream = new MemoryStream()){    Serializer.Serialize(stream, entity);
-            return stream.ToArray();}};
+            using (var stream = new MemoryStream()) { Serializer.Serialize(stream, entity);
+            return stream.ToArray();
+            };
+        }
     }
 }
