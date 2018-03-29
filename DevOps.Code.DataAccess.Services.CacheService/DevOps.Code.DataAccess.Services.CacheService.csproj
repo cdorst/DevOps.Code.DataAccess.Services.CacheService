@@ -15,7 +15,7 @@
     <PackageLicenseUrl>https://github.com/cdorst/DevOps.Code.DataAccess.Services.CacheService/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/cdorst/DevOps.Code.DataAccess.Services.CacheService</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cdorst/DevOps.Code.DataAccess.Services.CacheService</RepositoryUrl>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
