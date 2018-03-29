@@ -59,7 +59,7 @@ namespace DevOps.Code.DataAccess.Services.CacheService
         }
 
         /// <summary>De-serializes the cached entity</summary>
-        private  Deserialize(byte[] cacheEntry)
+        private TEntity Deserialize(byte[] cacheEntry)
         {
             _logger.LogInformation("Cache hit");
             return Serializer.Deserialize<TEntity>(new MemoryStream(cacheEntry));
