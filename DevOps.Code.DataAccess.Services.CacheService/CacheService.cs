@@ -38,7 +38,8 @@ namespace DevOps.Code.DataAccess.Services.CacheService
         {
             _logger.LogInformation($"Find entry: {key}");
             var cacheEntry = await _cache.GetAsync(key);
-            if (cacheEntry != null) return Deserialize(cacheEntry)_logger.LogInformation("Cache miss");
+            if (cacheEntry != null) return Deserialize(cacheEntry);
+            _logger.LogInformation("Cache miss");
             return null;
         }
 
